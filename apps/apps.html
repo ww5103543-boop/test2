@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No0ne Apps</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a0a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: rgba(17, 17, 17, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid rgba(58, 58, 58, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .back-btn {
+            background: rgba(42, 42, 42, 0.8);
+            border: 1px solid #4a4a4a;
+            padding: 8px 20px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(58, 58, 58, 0.9);
+        }
+        
+        .title {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .apps-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 50px;
+            justify-content: center;
+            align-items: center;
+            height: calc(100% - 60px);
+            overflow-y: auto;
+        }
+        
+        .app-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .app-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #1a1a2a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .app-card:hover .app-icon {
+            border-color: #00ffa6;
+            box-shadow: 0 0 15px rgba(0, 255, 166, 0.3);
+        }
+        
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .app-name {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .iframe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .iframe-container.active {
+            display: flex;
+        }
+        
+        .iframe-header {
+            background: rgba(17, 17, 17, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid rgba(58, 58, 58, 0.5);
+        }
+        
+        .close-iframe {
+            background: rgba(42, 42, 42, 0.8);
+            border: 1px solid #4a4a4a;
+            padding: 8px 20px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .iframe-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        iframe {
+            flex: 1;
+            width: 100%;
+            border: none;
+        }
+        
+        @media (max-width: 768px) {
+            .apps-grid {
+                gap: 20px;
+                padding: 30px;
+            }
+            .app-icon {
+                width: 80px;
+                height: 80px;
+            }
+            .app-name {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="back-btn">← Back</a>
+        <div class="title">No0ne Apps</div>
+    </div>
+    
+    <div class="apps-grid">
+        <div class="app-card" onclick="launchApp('roblox')">
+            <div class="app-icon">
+                <img src="https://m.media-amazon.com/images/I/21aoUPG3svL.png" alt="Roblox">
+            </div>
+            <div class="app-name">Roblox</div>
+        </div>
+        
+        <div class="app-card" onclick="launchApp('discord')">
+            <div class="app-icon">
+                <img src="https://pngimg.com/d/discord_PNG8.png">
+            </div>
+            <div class="app-name">Discord</div>
+        </div>
+    </div>
+    
+    <div id="iframeContainer" class="iframe-container">
+        <div class="iframe-header">
+            <button class="close-iframe" onclick="closeIframe()">← Back</button>
+            <span class="iframe-title" id="iframeTitle">Loading</span>
+        </div>
+        <iframe id="appIframe" src="about:blank" allow="fullscreen; microphone; camera; autoplay"></iframe>
+    </div>
+
+    <script>
+        function launchApp(app) {
+            const container = document.getElementById('iframeContainer');
+            const iframe = document.getElementById('appIframe');
+            const title = document.getElementById('iframeTitle');
+            
+            let url;
+            let appName;
+            
+            switch(app) {
+                case 'roblox':
+                    url = '/roblox.html';
+                    appName = 'Roblox';
+                    break;
+                case 'discord':
+                    url = '/apps/discord.html?';
+                    appName = 'Discord';
+                    break;
+                default:
+                    return;
+            }
+            
+            title.textContent = appName;
+            iframe.src = url;
+            container.classList.add('active');
+        }
+        
+        function closeIframe() {
+            const container = document.getElementById('iframeContainer');
+            const iframe = document.getElementById('appIframe');
+            container.classList.remove('active');
+         
+            setTimeout(() => {
+                iframe.src = 'about:blank';
+            }, 200);
+        }
+        
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const container = document.getElementById('iframeContainer');
+                if (container.classList.contains('active')) {
+                    closeIframe();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
