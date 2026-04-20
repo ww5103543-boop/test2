@@ -4,101 +4,23 @@
   <title>Discord</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html { width: 100%; height: 100vh; overflow: hidden; background: #313338; }
-    iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: none; }
-    #loading {
-      position: fixed; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      background: #313338; color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      gap: 14px; z-index: 10;
-    }
-    #loading img { width: 72px; height: 72px; border-radius: 18px; }
-    #status { color: #b5bac1; font-size: 14px; }
-    #errmsg { color: #f04747; font-size: 13px; max-width: 340px; text-align: center; display: none; }
-    .spin { width: 26px; height: 26px; border: 3px solid rgba(255,255,255,0.12); border-top-color: #5865f2; border-radius: 50%; animation: spin 0.7s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    *{margin:0;padding:0}
+    body,html{width:100%;height:100vh;overflow:hidden}
+    iframe{position:fixed;inset:0;width:100%;height:100%;border:none}
   </style>
 </head>
 <body>
-  <div id="loading">
-    <img src="https://discord.com/assets/847541504914fd33810e70a0ea73177e.ico" onerror="this.style.display='none'">
-    <div class="spin" id="spinner"></div>
-    <p id="status">Starting proxy...</p>
-    <p id="errmsg"></p>
-  </div>
-  <iframe id="f" allow="fullscreen; microphone; camera; autoplay; clipboard-read; clipboard-write"></iframe>
-
+  <iframe id="f" allow="fullscreen; microphone; camera; autoplay"></iframe>
   <script type="module">
-    import { BareMuxConnection } from "https://unpkg.com/@mercuryworkshop/bare-mux@2.1.7/dist/index.mjs";
-
-    const statusEl = document.getElementById('status');
-    const errEl    = document.getElementById('errmsg');
-    const spinner  = document.getElementById('spinner');
-
-    function setStatus(msg) { statusEl.textContent = msg; }
-    function showError(msg) {
-      spinner.style.display = 'none';
-      statusEl.textContent = 'Something went wrong';
-      errEl.textContent = msg;
-      errEl.style.display = 'block';
-    }
-
-    try {
-      // 1. Register SW
-      setStatus('Registering service worker...');
-      if (!navigator.serviceWorker) throw new Error('Service workers not supported.');
-      try {
-        await navigator.serviceWorker.register('/ultraworker.js');
-      } catch (e) {
-        throw new Error('SW register failed — /ultraworker.js unreachable? (' + e.message + ')');
-      }
-      await navigator.serviceWorker.ready;
-      if (!navigator.serviceWorker.controller) {
-        await new Promise(r => navigator.serviceWorker.addEventListener('controllerchange', r, { once: true }));
-      }
-
-      // 2. Load scramjet
-      setStatus('Loading scramjet...');
-      await new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = '/ximplesc/scram/scramjet.all.js';
-        s.onload = resolve;
-        s.onerror = () => reject(new Error('/ximplesc/scram/scramjet.all.js failed to load'));
-        document.head.appendChild(s);
-      });
-      if (!window.$scramjetLoadController) throw new Error('$scramjetLoadController missing after load');
-      const { ScramjetController } = window.$scramjetLoadController();
-      const scramjet = new ScramjetController({
-        files: {
-          wasm: '/ximplesc/scram/scramjet.wasm.wasm',
-          all:  '/ximplesc/scram/scramjet.all.js',
-          sync: '/ximplesc/scram/scramjet.sync.js',
-        },
-      });
-      scramjet.init('/ultraworker.js');
-      window.scramjet = scramjet;
-
-      // 3. Transport
-      setStatus('Connecting transport...');
-      const connection = new BareMuxConnection('/bareworker.js');
-      await connection.setTransport(
-        'https://unpkg.com/@mercuryworkshop/epoxy-transport@2.1.27/dist/index.mjs',
-        [{ wisp: 'wss://anura.pro/' }]
-      );
-
-      // 4. Load Discord
-      setStatus('Connecting to Discord...');
-      const iframe = document.getElementById('f');
-      iframe.src = scramjet.encodeUrl('https://discord.com/app');
-      iframe.addEventListener('load', () => {
-        document.getElementById('loading').style.display = 'none';
-      }, { once: true });
-
-    } catch (e) {
-      showError(e.message);
-    }
+    import { setTransport, setWisp, getProxied } from "../lithium-js/lithium.mjs";
+    
+    setWisp(localStorage.getItem('wispServer') || "wss://wisp.waved.site/");
+    setTransport(localStorage.getItem('transport') || "libcurl");
+    
+    while (!window.scramjet) await new Promise(r => setTimeout(r, 20));
+    
+    let proxyurl = await getProxied("https://discord.com/app");
+    document.getElementById('f').src = proxyurl;
   </script>
 </body>
 </html>
