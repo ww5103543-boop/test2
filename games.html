@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    fetch('/sidebar.html')
+        .then(res => res.text())
+        .then(html => {
+            document.body.insertAdjacentHTML('afterbegin', html);
+        });
+</script>
+<style>
+    body {
+        margin-left: 60px;
+        transition: margin-left 0.3s ease;
+    }
+    body.sidebar-collapsed {
+        margin-left: 0;
+    }
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="robots" content="noindex, nofollow">
+    <title>No0ne Games</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: block;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .back-to-proxy-btn {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .back-to-proxy-btn:hover {
+            background: #333;
+            border-color: #666;
+            transform: scale(1.05);
+        }
+
+        .back-to-proxy-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+            position: relative;
+            display: inline-block;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .game-card {
+            background: #111111;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid #333;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: #666;
+            box-shadow: 0 15px 30px rgba(255,255,255,0.1);
+            background: #1a1a1a;
+        }
+
+        .game-icon {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-bottom: 2px solid #333;
+            background: #222;
+        }
+
+        .game-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .game-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stats {
+            text-align: center;
+            color: #888;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .game-view {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1000;
+        }
+
+        .game-view.active {
+            display: block;
+        }
+
+        .game-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1001;
+            border-bottom: 1px solid #333;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .back-button {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .back-button:hover {
+            background: #444;
+            border-color: #777;
+            transform: scale(1.05);
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .newtab-header-btn {
+            background: #1a3a5c;
+            color: white;
+            border: 1px solid #2c5a8c;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .newtab-header-btn:hover {
+            background: #2c5a8c;
+            border-color: #4a8cbb;
+            transform: scale(1.05);
+        }
+
+        .newtab-header-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        .game-title {
+            color: white;
+            margin-left: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            flex-grow: 1;
+        }
+
+        .game-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            margin-top: 60px;
+            background: #000;
+        }
+
+        .error-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100% - 60px);
+            margin-top: 60px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error-message h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+
+        .error-message button {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .error-message button:hover {
+            background: #444;
+            border-color: #777;
+            transform: scale(1.05);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #333;
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .games-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 10px; }
+            .game-name { font-size: 0.9rem; }
+            .game-title { font-size: 1rem; }
+            .game-header { gap: 8px; padding: 0 10px; }
+            .back-button, .newtab-header-btn { padding: 6px 12px; font-size: 0.85rem; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.2rem; }
+            .games-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="gamesView">
+        <header>
+            
+            <h1>No0ne Games</h1>
+        </header>
+
+        <div class="stats" id="gameCount">Loading games...</div>
+
+        <div class="games-grid" id="gamesGrid"></div>
+
+        <div class="footer">No0ne Games</div>
+    </div>
+
+    <div class="game-view" id="gameView">
+        <div class="game-header">
+            <button class="back-button" onclick="backToGames()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+                Back to Games
+            </button>
+            <div class="game-title" id="gameTitle"></div>
+            <button class="newtab-header-btn" id="openNewTabHeaderBtn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                </svg>
+                if it doesnt load click this
+            </button>
+        </div>
+        <div id="iframeContainer" style="height: calc(100% - 60px); margin-top: 60px;">
+            <iframe class="game-iframe" id="gameIframe" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        let currentGameUrl = '';
+        let currentGameName = '';
+        let loadTimeout = null;
+        let gamesData = [];
+
+        const originalGames = [
+            { name: "Gun Spin", url: "https://theairidancegunspin.aaacraps.workers.dev/", icon: "https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/b2/97/a6/b297a646-beee-ee0b-15b2-1c20760ebe0d/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-85-220.png/1024x1024bb.png" },
+            { name: "FNAE", url: "https://math.lualol.com/gamefile/fnae.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUAHWUmXW5p_n72UZlFYJ9aUWY6crdBhl2Og&s" },
+            { name: "Stick man Gta", url: "https://stickmangta.aaacraps.workers.dev/", icon: "https://www.onlinegames.io/media/posts/900/responsive/stickman-gta-city-free-xs.jpg" },
+            { name: "Granny", url: "https://math.lualol.com/gamefile/tung.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8X5JjpaXIFfsI2KKuU_kjCFDAGJZxktgz3g&s" },
+            { name: "Cookie Clicker", url: "https://math.lualol.com/games/cookie-clicker/index.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUaILhFYRcXKcCxVOrB2i-1Jo4kfIxh7rIag&s" },
+            { name: "Escape Road", url: "https://math.lualol.com/gamefile/escape.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkf70EeBTZRRJAn9fvuL0wwQglMCYEoaPJEQ&s" },
+            { name: "Escape Road 2", url: "https://escaperoad.aaacraps.workers.dev/", icon: "https://escaperoadcity2.io/data/image/game/escape-road-city-2.png" },
+            { name: "Subway Surfers", url: "https://math.lualol.com/games/subway-surfers/index.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv581lSJvWo4pRSP97wi8hum56FJUOndEJbQ&s" },
+            { name: "Space Waves", url: "https://math.lualol.com/gamefile/spacewaves.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlvpINlHVXkHS4cpT7NznJUU6LA6B1WsDhkw&s" },
+            { name: "Mathist", url: "https://multiplication.testson.top", icon: "https://via.placeholder.com/150?text=Mathist" },
+            { name: "Wordle Unlimited", url: "https://math.lualol.com/games/wordle-unlimited/index.html", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNu9eNxjCeX0oNrdUvyWCkY_t_CBtFA1fNmA&s" },
+            { name: "Meme Soundboard", url: "https://soundboardguys.com/?ref=producthunt", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCyvlABdrfx6pG9ZVOGzkzT7EZFLG2Hk3z1Q&s" },
+            { name: "Block Blast", url: "https://blockblast.aaacraps.workers.dev/", icon: "https://thehofstrachronicle.com/wp-content/uploads/2025/03/block-blast.png" },
+            { name: "Stickman Hook", url: "https://hooktest.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKclUg-7v0l4KeCYELMzTrsaHvwJ1uubNfkw&s" },
+            { name: "Duck Life", url: "https://ducklife.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5GdAbv5dSITcuVtwHYxx5VlAmqagd9pkSSw&s" },
+            { name: "Survival Karts", url: "https://karts.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpgKJn4U5HmiZt-I52kiwmnJB-phnwfRdIvQ&s" },
+            { name: "Slice Master", url: "https://slicemaster.aaacraps.workers.dev/", icon: "https://imgs.crazygames.com/slice-master_16x9/20240731033229/slice-master_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop" },
+            { name: "Flappy Bird", url: "https://flappy.aaacraps.workers.dev/", icon: "https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png" },
+            { name: "Agar.io", url: "https://agario.aaacraps.workers.dev", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHaBmrNqCK6xfStjMmy-bdzsHuUOn3DBkd7w&s" },
+            { name: "Twerk Race 3D", url: "https://twerk.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-uMHIZhrmLNRcoZaHmfhySUEq9flgqx73g&s" },
+            { name: "Crossy Road", url: "https://crossyroad.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf1LIVPyxmmUY54ebtS6jxfhHzejVqW7ZMMw&s" },
+            { name: "Paper.io", url: "https://paperio.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbOYDL-XogArpPn5yhnKk4E0pRDmWTIRXnxA&s" },
+            { name: "Slope", url: "https://slope.aaacraps.workers.dev/", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3lnyWQirtygQAxUFAEMooU4lVOOLbtgeYfw&s" }
+        ];
+
+        const githubGamesList = [
+            { name: "3D Bolt Master", url: "https://willybilly4653.github.io/games/3d-bolt-master/", icon: "" },
+            { name: "3D Bowling", url: "https://willybilly4653.github.io/games/3d-bowling/", icon: "" },
+            { name: "8 Ball Classic", url: "https://willybilly4653.github.io/games/8-ball-classic/", icon: "" },
+            { name: "99 Balls 3D", url: "https://willybilly4653.github.io/games/99-balls-3d/", icon: "" },
+            { name: "Amaze", url: "https://willybilly4653.github.io/games/amaze/", icon: "" },
+            { name: "Angry Birds Showdown", url: "https://willybilly4653.github.io/games/angry-birds-showdown/", icon: "" },
+            { name: "Aquapark IO", url: "https://willybilly4653.github.io/games/aquapark-io/", icon: "" },
+            { name: "Archery World Tour", url: "https://willybilly4653.github.io/games/archery-world-tour/", icon: "" },
+            { name: "Attack Hole", url: "https://willybilly4653.github.io/games/attack-hole/", icon: "" },
+            { name: "Ball Blast", url: "https://willybilly4653.github.io/games/ball-blast/", icon: "" },
+            { name: "Balloon Paradise", url: "https://willybilly4653.github.io/games/balloon-paradise/", icon: "" },
+            { name: "Basket Battle", url: "https://willybilly4653.github.io/games/basket-battle/", icon: "" },
+            { name: "Basketball FRVR", url: "https://willybilly4653.github.io/games/basketball-frvr/", icon: "" },
+            { name: "Bazooka Boy", url: "https://willybilly4653.github.io/games/bazooka-boy/", icon: "" },
+            { name: "Bolly Beat", url: "https://willybilly4653.github.io/games/bolly-beat/", icon: "" },
+            { name: "Bottle Jump 3D", url: "https://willybilly4653.github.io/games/bottle-jump-3d/", icon: "" },
+            { name: "Bouncemasters", url: "https://willybilly4653.github.io/games/bouncemasters/", icon: "" },
+            { name: "Bowmasters", url: "https://willybilly4653.github.io/games/bowmasters/", icon: "" },
+            { name: "Bridge Race", url: "https://willybilly4653.github.io/games/bridge-race/", icon: "" },
+            { name: "Build A Queen", url: "https://willybilly4653.github.io/games/build-a-queen/", icon: "" },
+            { name: "Cannon Balls 3D", url: "https://willybilly4653.github.io/games/cannon-balls-3d/", icon: "" },
+            { name: "Carrom Clash", url: "https://willybilly4653.github.io/games/carrom-clash/", icon: "" },
+            { name: "Chess Classic", url: "https://willybilly4653.github.io/games/chess-classic/", icon: "" },
+            { name: "City Smash", url: "https://willybilly4653.github.io/games/city-smash/", icon: "" },
+            { name: "Color Burst 3D", url: "https://willybilly4653.github.io/games/color-burst-3d/", icon: "" },
+            { name: "Color Match", url: "https://willybilly4653.github.io/games/color-match/", icon: "" },
+            { name: "Color Water Sort", url: "https://willybilly4653.github.io/games/color-water-sort-3d/", icon: "" },
+            { name: "Crossy Road GH", url: "https://willybilly4653.github.io/games/crossy-road/", icon: "" },
+            { name: "Dan The Man", url: "https://willybilly4653.github.io/games/dan-the-man/", icon: "" },
+            { name: "Dig Deep", url: "https://willybilly4653.github.io/games/dig-deep/", icon: "" },
+            { name: "Draw The Line", url: "https://willybilly4653.github.io/games/draw-the-line/", icon: "" },
+            { name: "Fashion Battle", url: "https://willybilly4653.github.io/games/fashion-battle/", icon: "" },
+            { name: "Fill The Fridge", url: "https://willybilly4653.github.io/games/fill-the-fridge/", icon: "" },
+            { name: "Find The Alien", url: "https://willybilly4653.github.io/games/find-the-alien/", icon: "" },
+            { name: "Flappy Dunk", url: "https://willybilly4653.github.io/games/flappy-dunk/", icon: "" },
+            { name: "Fork N Sausage", url: "https://willybilly4653.github.io/games/fork-n-sausage/", icon: "" },
+            { name: "Freekick Football", url: "https://willybilly4653.github.io/games/freekick-football/", icon: "" },
+            { name: "Go Escape", url: "https://willybilly4653.github.io/games/go-escape/", icon: "" },
+            { name: "Going Balls", url: "https://willybilly4653.github.io/games/going-balls/", icon: "" },
+            { name: "Guess Their Answer", url: "https://willybilly4653.github.io/games/guess-their-answer/", icon: "" },
+            { name: "Gym Stack", url: "https://willybilly4653.github.io/games/gym-stack/", icon: "" },
+            { name: "Harvest IO", url: "https://willybilly4653.github.io/games/harvest-io/", icon: "" },
+            { name: "Hide N Seek", url: "https://willybilly4653.github.io/games/hide-n-seek/", icon: "" },
+            { name: "Hill Climb Racing", url: "https://willybilly4653.github.io/games/hill-climb-racing-lite/", icon: "" },
+            { name: "Kitchen Bazar", url: "https://willybilly4653.github.io/games/kitchen-bazar/", icon: "" },
+            { name: "Magic Tiles 3", url: "https://willybilly4653.github.io/games/magic-tiles-3/", icon: "" },
+            { name: "Match Triple 3D", url: "https://willybilly4653.github.io/games/match-triple-3d/", icon: "" },
+            { name: "Maze Speedrun", url: "https://willybilly4653.github.io/games/maze-speedrun/", icon: "" },
+            { name: "Mob Control", url: "https://willybilly4653.github.io/games/mob-control-html5/", icon: "" },
+            { name: "Mr Racer", url: "https://willybilly4653.github.io/games/mr-racer/", icon: "" },
+            { name: "Om Nom Run", url: "https://willybilly4653.github.io/games/om-nom-run/", icon: "" },
+            { name: "Pac Man Superfast", url: "https://willybilly4653.github.io/games/pac-man-superfast/", icon: "" },
+            { name: "Parking Rush", url: "https://willybilly4653.github.io/games/parking-rush/", icon: "" },
+            { name: "Pokey Ball", url: "https://willybilly4653.github.io/games/pokey-ball/", icon: "" },
+            { name: "Pou", url: "https://willybilly4653.github.io/games/pou/", icon: "" },
+            { name: "Race Master 3D", url: "https://willybilly4653.github.io/games/race-master-3d/", icon: "" },
+            { name: "Room Sort", url: "https://willybilly4653.github.io/games/room-sort/", icon: "" },
+            { name: "Royal Towers TD", url: "https://willybilly4653.github.io/games/royal-towers-medieval-td/", icon: "" },
+            { name: "Scooter Xtreme", url: "https://willybilly4653.github.io/games/scooter-xtreme/", icon: "" },
+            { name: "Slice It All", url: "https://willybilly4653.github.io/games/slice-it-all/", icon: "" },
+            { name: "Slime IO", url: "https://willybilly4653.github.io/games/slime-io/", icon: "" },
+            { name: "Soccer Dash", url: "https://willybilly4653.github.io/games/soccer-dash/", icon: "" },
+            { name: "Solar Smash", url: "https://willybilly4653.github.io/games/solar-smash/", icon: "" },
+            { name: "Stacky Dash", url: "https://willybilly4653.github.io/games/stacky-dash/", icon: "" },
+            { name: "State IO", url: "https://willybilly4653.github.io/games/state-io/", icon: "" },
+            { name: "Stealth Master", url: "https://willybilly4653.github.io/games/stealth-master/", icon: "" },
+            { name: "Stick War Legacy", url: "https://willybilly4653.github.io/games/stick-war-legacy/", icon: "" },
+            { name: "Supreme Duelist", url: "https://willybilly4653.github.io/games/supreme-duelist/", icon: "" },
+            { name: "Sushi Roll", url: "https://willybilly4653.github.io/games/sushi-roll/", icon: "" },
+            { name: "Sword Play", url: "https://willybilly4653.github.io/games/sword-play/", icon: "" },
+            { name: "Table Tennis", url: "https://willybilly4653.github.io/games/table-tennis/", icon: "" },
+            { name: "Tall IO", url: "https://willybilly4653.github.io/games/tall-io/", icon: "" },
+            { name: "Tall Man Run", url: "https://willybilly4653.github.io/games/tall-man-run/", icon: "" },
+            { name: "Texas Holdem", url: "https://willybilly4653.github.io/games/texas-holdem/", icon: "" },
+            { name: "Tiletopia", url: "https://willybilly4653.github.io/games/tiletopia/", icon: "" },
+            { name: "Tower Crash 3D", url: "https://willybilly4653.github.io/games/tower-crash-3d/", icon: "" },
+            { name: "Trivia Crack", url: "https://willybilly4653.github.io/games/trivia-crack/", icon: "" },
+            { name: "Turbo Stars", url: "https://willybilly4653.github.io/games/turbo-stars/", icon: "" }
+        ];
+
+        const googleClassGames = [
+            { name: "A Game Black Hole", url: "https://willybilly4653.github.io/google-class/a-game-black-hole/", icon: "" },
+            { name: "Bad Parenting", url: "https://willybilly4653.github.io/google-class/bad-parenting/", icon: "" },
+            { name: "Bart Blast", url: "https://willybilly4653.github.io/google-class/bart-blast/", icon: "" },
+            { name: "Bin", url: "https://willybilly4653.github.io/google-class/bin/", icon: "" },
+            { name: "Blockpost", url: "https://willybilly4653.github.io/google-class/blockpost/", icon: "" },
+            { name: "Brawl 3D", url: "https://willybilly4653.github.io/google-class/brawl-3d/", icon: "" },
+            { name: "Bloons TD 6", url: "https://willybilly4653.github.io/google-class/btd6/", icon: "" },
+            { name: "Buckshot Roulette", url: "https://willybilly4653.github.io/google-class/buckshot-roulette/", icon: "" },
+            { name: "CC3D", url: "https://willybilly4653.github.io/google-class/cc3d/", icon: "" },
+            { name: "Cluster Rush", url: "https://willybilly4653.github.io/google-class/cluster-rush/", icon: "" },
+            { name: "Color Pencil Run", url: "https://willybilly4653.github.io/google-class/color-pencil-run/", icon: "" },
+            { name: "Coreball", url: "https://willybilly4653.github.io/google-class/coreball/", icon: "" },
+            { name: "Crazy Cattle 3D", url: "https://willybilly4653.github.io/google-class/crazycattle3d/", icon: "" },
+            { name: "Crossy Road", url: "https://willybilly4653.github.io/google-class/crossy-road/", icon: "" },
+            { name: "Cubes 2048", url: "https://willybilly4653.github.io/google-class/cubes2048/", icon: "" },
+            { name: "Driven Wild", url: "https://willybilly4653.github.io/google-class/driven-wild/", icon: "" },
+            { name: "Emulator", url: "https://willybilly4653.github.io/google-class/emu/", icon: "" },
+            { name: "Escape Road City 2", url: "https://willybilly4653.github.io/google-class/escape-road-city-2/", icon: "" },
+            { name: "Escape Road 2", url: "https://willybilly4653.github.io/google-class/escaperoad2/", icon: "" },
+            { name: "GD Lite", url: "https://willybilly4653.github.io/google-class/gdlite/", icon: "" },
+            { name: "Jetpack Joyride", url: "https://willybilly4653.github.io/google-class/jetpack-joyride/", icon: "" },
+            { name: "Melon Playground", url: "https://willybilly4653.github.io/google-class/melon-playground/", icon: "" },
+            { name: "Monster Tracks", url: "https://willybilly4653.github.io/google-class/monster-tracks/", icon: "" },
+            { name: "Nazi Zombies Portable", url: "https://willybilly4653.github.io/google-class/nazi-zombies-portable/", icon: "" },
+            { name: "Nova Craft", url: "https://willybilly4653.github.io/google-class/nova-craft/", icon: "" },
+            { name: "Ragdoll Hit", url: "https://willybilly4653.github.io/google-class/ragdoll-hit/", icon: "" },
+            { name: "Repo", url: "https://willybilly4653.github.io/google-class/repo/", icon: "" },
+            { name: "Retro Bowl College", url: "https://willybilly4653.github.io/google-class/retrobowlcollege/", icon: "" },
+            { name: "Shapezio", url: "https://willybilly4653.github.io/google-class/shapezio/", icon: "" },
+            { name: "Shred Sauce", url: "https://willybilly4653.github.io/google-class/shredsauce/", icon: "" },
+            { name: "Slope", url: "https://willybilly4653.github.io/google-class/slope/", icon: "" },
+            { name: "Stickman Hook", url: "https://willybilly4653.github.io/google-class/stickman-hook/", icon: "" },
+            { name: "SWF Player", url: "https://willybilly4653.github.io/google-class/swf/", icon: "" },
+            { name: "Temple Run 2", url: "https://willybilly4653.github.io/google-class/temple-run-2/", icon: "" },
+            { name: "Turbo Moto Racer", url: "https://willybilly4653.github.io/google-class/turbo-moto-racer/", icon: "" },
+            { name: "Waterworks", url: "https://willybilly4653.github.io/google-class/waterworks/", icon: "" },
+            { name: "Winter Clash 3D", url: "https://willybilly4653.github.io/google-class/winter-clash-3d/", icon: "" }
+        ];
+
+        const xmlGames = [
+            { name: "1v1", url: "https://willybilly4653.github.io/google-class/1v1.xml", icon: "" },
+            { name: "Achievement Unlocked", url: "https://willybilly4653.github.io/google-class/achievement-unlocked.xml", icon: "" },
+            { name: "Achievement Unlocked 2", url: "https://willybilly4653.github.io/google-class/achievement-unlocked-2.xml", icon: "" },
+            { name: "Achievement Unlocked 3", url: "https://willybilly4653.github.io/google-class/achievement-unlocked-3.xml", icon: "" },
+            { name: "Angry Birds", url: "https://willybilly4653.github.io/google-class/angry-birds.xml", icon: "" },
+            { name: "Backrooms", url: "https://willybilly4653.github.io/google-class/backrooms.xml", icon: "" },
+            { name: "Baldi's Basics", url: "https://willybilly4653.github.io/google-class/baldis-basics.xml", icon: "" },
+            { name: "Basket Random", url: "https://willybilly4653.github.io/google-class/basket-random.xml", icon: "" },
+            { name: "Big Tower Tiny Square", url: "https://willybilly4653.github.io/google-class/big-tower-tiny-square.xml", icon: "" },
+            { name: "Bloons 5", url: "https://willybilly4653.github.io/google-class/bloons5.xml", icon: "" },
+            { name: "Bob The Robber", url: "https://willybilly4653.github.io/google-class/bobtherobber.xml", icon: "" },
+            { name: "Boxing Random", url: "https://willybilly4653.github.io/google-class/boxing-random.xml", icon: "" },
+            { name: "Burrito Bison 2", url: "https://willybilly4653.github.io/google-class/burritobison2.xml", icon: "" },
+            { name: "Cannon Basketball", url: "https://willybilly4653.github.io/google-class/cannon-basketball.xml", icon: "" },
+            { name: "Car Stunts", url: "https://willybilly4653.github.io/google-class/car-stunts.xml", icon: "" },
+            { name: "Cookie Clicker", url: "https://willybilly4653.github.io/google-class/cookie-clicker.xml", icon: "" },
+            { name: "Counter Strike", url: "https://willybilly4653.github.io/google-class/counter-strike.xml", icon: "" },
+            { name: "Cubefield", url: "https://willybilly4653.github.io/google-class/cubefield.xml", icon: "" },
+            { name: "Cut The Rope", url: "https://willybilly4653.github.io/google-class/cut-the-rope.xml", icon: "" },
+            { name: "Doom 3D", url: "https://willybilly4653.github.io/google-class/doom3d.xml", icon: "" },
+            { name: "Draw Climber", url: "https://willybilly4653.github.io/google-class/drawclimber.xml", icon: "" },
+            { name: "Drive Mad", url: "https://willybilly4653.github.io/google-class/drive-mad.xml", icon: "" },
+            { name: "Five Nights at Freddy's", url: "https://willybilly4653.github.io/google-class/five-nights-at-freddys.xml", icon: "" },
+            { name: "Granny", url: "https://willybilly4653.github.io/google-class/granny.xml", icon: "" },
+            { name: "Gunspin", url: "https://willybilly4653.github.io/google-class/gunspin.xml", icon: "" },
+            { name: "Johnny Trigger", url: "https://willybilly4653.github.io/google-class/johnny-trigger.xml", icon: "" },
+            { name: "Journey Downhill", url: "https://willybilly4653.github.io/google-class/journeydownhill.xml", icon: "" },
+            { name: "Line Rider", url: "https://willybilly4653.github.io/google-class/line-rider.xml", icon: "" },
+            { name: "Mario 64", url: "https://willybilly4653.github.io/google-class/maio64.xml", icon: "" },
+            { name: "Moto X3M", url: "https://willybilly4653.github.io/google-class/moto-x3m.xml", icon: "" },
+            { name: "Moto X3M 2", url: "https://willybilly4653.github.io/google-class/moto-x3m-2.xml", icon: "" },
+            { name: "Moto X3M 3", url: "https://willybilly4653.github.io/google-class/moto-x3m-3.xml", icon: "" },
+            { name: "Moto X3M Spooky", url: "https://willybilly4653.github.io/google-class/moto-x3m-spooky.xml", icon: "" },
+            { name: "Moto X3M Winter", url: "https://willybilly4653.github.io/google-class/moto-x3m-winter.xml", icon: "" },
+            { name: "Paper.io 2", url: "https://willybilly4653.github.io/google-class/paper-io-2.xml", icon: "" },
+            { name: "Sandboxels", url: "https://willybilly4653.github.io/google-class/sandboxels.xml", icon: "" },
+            { name: "The World's Hardest Game", url: "https://willybilly4653.github.io/google-class/the-worlds-hardest-game.xml", icon: "" },
+            { name: "The World's Hardest Game 3", url: "https://willybilly4653.github.io/google-class/the-worlds-hardest-game-3.xml", icon: "" },
+            { name: "The World's Hardest Game 4", url: "https://willybilly4653.github.io/google-class/the-worlds-hardest-game-4.xml", icon: "" },
+            { name: "This Is The Only Level", url: "https://willybilly4653.github.io/google-class/this-is-the-only-level.xml", icon: "" },
+            { name: "Tiny Fishing", url: "https://willybilly4653.github.io/google-class/tiny-fishing.xml", icon: "" },
+            { name: "Tomb Of The Mask", url: "https://willybilly4653.github.io/google-class/tomb-of-the-mask.xml", icon: "" },
+            { name: "Toss The Turtle", url: "https://willybilly4653.github.io/google-class/toss-the-turtle.xml", icon: "" },
+            { name: "Tube Jumpers", url: "https://willybilly4653.github.io/google-class/tube-jumpers.xml", icon: "" },
+            { name: "Vex 8", url: "https://willybilly4653.github.io/google-class/vex8.xml", icon: "" },
+            { name: "Words", url: "https://willybilly4653.github.io/google-class/words.xml", icon: "" }
+        ];
+
+        const allGamesSet = new Map();
+        
+        const addGame = (game) => {
+            if (!allGamesSet.has(game.name)) {
+                allGamesSet.set(game.name, game);
+            }
+        };
+        
+        originalGames.forEach(addGame);
+        githubGamesList.forEach(addGame);
+        googleClassGames.forEach(addGame);
+        xmlGames.forEach(addGame);
+        
+        const allGames = Array.from(allGamesSet.values());
+
+        function getProxyUrl(url) {
+            return `/scramjet/${encodeURIComponent(url)}`;
+        }
+
+        function getLetterIcon(gameName) {
+            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#34495e'];
+            const colorIndex = gameName.length % colors.length;
+            const initials = gameName.split(' ').map(word => word[0]).join('').slice(0, 2).toUpperCase();
+            return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='${colors[colorIndex].replace('#', '%23')}'/%3E%3Ctext x='50' y='55' font-size='32' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'%3E${initials}%3C/text%3E%3C/svg%3E`;
+        }
+
+        function buildGamesGrid() {
+            const grid = document.getElementById('gamesGrid');
+            const gameCountSpan = document.getElementById('gameCount');
+            grid.innerHTML = '';
+            gamesData = [];
+            
+            allGames.forEach((game, index) => {
+                gamesData.push({ name: game.name, url: game.url });
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.onclick = () => playGame(index, game.name, game.url);
+                const iconImg = document.createElement('img');
+                iconImg.className = 'game-icon';
+                if (game.icon && game.icon !== "") {
+                    iconImg.src = game.icon;
+                    iconImg.onerror = function() { this.src = getLetterIcon(game.name); };
+                } else {
+                    iconImg.src = getLetterIcon(game.name);
+                }
+                iconImg.alt = game.name;
+                iconImg.loading = 'lazy';
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'game-info';
+                infoDiv.innerHTML = `<div class="game-name">${escapeHtml(game.name)}</div>`;
+                card.appendChild(iconImg);
+                card.appendChild(infoDiv);
+                grid.appendChild(card);
+            });
+            gameCountSpan.textContent = `${gamesData.length} Games`;
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function playGame(index, name, url) {
+            currentGameUrl = url;
+            currentGameName = name;
+            
+            if (loadTimeout) clearTimeout(loadTimeout);
+            
+            const container = document.getElementById('iframeContainer');
+            const oldError = document.getElementById('errorMessage');
+            if (oldError) oldError.remove();
+            
+            const iframe = document.getElementById('gameIframe');
+            iframe.style.display = 'block';
+            iframe.src = url;
+            
+            document.getElementById('gamesView').style.display = 'none';
+            document.getElementById('gameView').classList.add('active');
+            document.getElementById('gameTitle').textContent = name;
+            
+            loadTimeout = setTimeout(() => {
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    if (iframeDoc && iframeDoc.body) {
+                        const hasContent = iframeDoc.body.children.length > 0;
+                        const bodyText = iframeDoc.body.innerText || iframeDoc.body.textContent;
+                        const isBlackScreen = !hasContent && (!bodyText || bodyText.trim() === '');
+                        if (isBlackScreen) showErrorFallback();
+                    }
+                } catch(e) {}
+            }, 5000);
+            
+            iframe.onload = () => { if (loadTimeout) clearTimeout(loadTimeout); };
+            
+            history.pushState({ game: index, name: name, url: url }, name, '#game');
+        }
+
+        function showErrorFallback() {
+            const container = document.getElementById('iframeContainer');
+            const iframe = document.getElementById('gameIframe');
+            iframe.style.display = 'none';
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.id = 'errorMessage';
+            errorDiv.innerHTML = `
+                <h3>didnt load</h3>
+                <p>Try opening in a new tab:</p>
+                <button id="openNewTabBtn">Open in New Tab</button>
+                <button id="goBackBtn">Back to Games</button>
+            `;
+            container.appendChild(errorDiv);
+            document.getElementById('openNewTabBtn').onclick = () => { window.open(currentGameUrl, '_blank'); backToGames(); };
+            document.getElementById('goBackBtn').onclick = () => backToGames();
+        }
+
+        function backToGames() {
+            if (loadTimeout) clearTimeout(loadTimeout);
+            document.getElementById('gamesView').style.display = 'block';
+            document.getElementById('gameView').classList.remove('active');
+            document.getElementById('gameIframe').src = 'about:blank';
+            document.getElementById('gameIframe').style.display = 'block';
+            const errorMsg = document.getElementById('errorMessage');
+            if (errorMsg) errorMsg.remove();
+            history.pushState({ view: 'games' }, 'No0ne Games', '/games');
+        }
+
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.game !== undefined) {
+                const game = gamesData[event.state.game];
+                if (game) playGame(event.state.game, game.name, game.url);
+            } else {
+                backToGames();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('gameView').classList.contains('active')) {
+                backToGames();
+            }
+        });
+
+        document.getElementById('openNewTabHeaderBtn').addEventListener('click', () => {
+            if (currentGameUrl) {
+                const iframe = document.getElementById('gameIframe');
+                iframe.style.display = 'block';
+                iframe.src = getProxyUrl(currentGameUrl);
+                const errorMsg = document.getElementById('errorMessage');
+                if (errorMsg) errorMsg.remove();
+            }
+        });
+
+        buildGamesGrid();
+    </script>
+  <div class="open-sidebar-btn" onclick="openSidebar()">☰</div>
+</body>
+</html>
