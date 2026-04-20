@@ -63,18 +63,18 @@
       setStatus('Loading scramjet...');
       await new Promise((resolve, reject) => {
         const s = document.createElement('script');
-        s.src = '/lithium-js/scram/scramjet.all.js';
+        s.src = '/ximplesc/scram/scramjet.all.js';
         s.onload = resolve;
-        s.onerror = () => reject(new Error('/lithium-js/scram/scramjet.all.js failed to load'));
+        s.onerror = () => reject(new Error('/ximplesc/scram/scramjet.all.js failed to load'));
         document.head.appendChild(s);
       });
       if (!window.$scramjetLoadController) throw new Error('$scramjetLoadController missing after load');
       const { ScramjetController } = window.$scramjetLoadController();
       const scramjet = new ScramjetController({
         files: {
-          wasm: '/lithium-js/scram/scramjet.wasm.wasm',
-          all:  '/lithium-js/scram/scramjet.all.js',
-          sync: '/lithium-js/scram/scramjet.sync.js',
+          wasm: '/ximplesc/scram/scramjet.wasm.wasm',
+          all:  '/ximplesc/scram/scramjet.all.js',
+          sync: '/ximplesc/scram/scramjet.sync.js',
         },
       });
       scramjet.init('/ultraworker.js');
