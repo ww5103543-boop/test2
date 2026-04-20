@@ -14,7 +14,7 @@
   <script type="module">
     import { setTransport, setWisp, getProxied } from "../lithium-js/lithium.mjs";
     
-    setWisp(localStorage.getItem('wispServer') || "wss://wisp.waved.site/");
+    setWisp(localStorage.getItem('wispServer') || "wss://www.mathnotnotwork.site/");
     setTransport(localStorage.getItem('transport') || "libcurl");
     
     while (!window.scramjet) await new Promise(r => setTimeout(r, 20));
